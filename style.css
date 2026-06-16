@@ -1,0 +1,39 @@
+/* 발전기실 급·배기 개구율 계산기 — 스타일 */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
+  background: #f0ede8;
+  min-height: 100vh;
+  font-size: 14px;
+}
+
+/* 숫자 input 스피너 제거 */
+input[type=number] {
+  -moz-appearance: textfield;
+  font-family: inherit;
+}
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+}
+
+/* 스크롤바 커스텀 */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-thumb { background: #c1c1c1; border-radius: 3px; }
+
+/* 인쇄 설정 */
+@media print {
+  body { background: #fff; }
+  #root > div > div:first-child,
+  #root > div > div:last-child { display: none !important; }
+  #print-area { display: block !important; }
+  .no-print { display: none !important; }
+}
+
+#print-area { display: none; }

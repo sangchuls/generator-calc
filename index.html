@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>발전기실 급·배기 개구율 계산기</title>
+
+  <!-- 외부 라이브러리 -->
+  <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
+  <!-- 스타일 -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div id="print-area"></div>
+  <div id="root"></div>
+
+  <!-- 앱 스크립트 (JSX → Babel 인라인 트랜스파일) -->
+  <script type="text/babel" src="app.jsx"></script>
+
+</body>
+</html>
