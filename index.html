@@ -9,7 +9,7 @@
   <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
   <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 
   <!-- 스타일 -->
   <link rel="stylesheet" href="style.css">
@@ -19,8 +19,35 @@
   <div id="print-area"></div>
   <div id="root"></div>
 
-  <!-- 앱 스크립트 (JSX → Babel 인라인 트랜스파일) -->
-  <script type="text/babel" src="app.jsx"></script>
+  <!-- 앱 스크립트: fetch로 JSX를 읽어와 Babel로 직접 트랜스파일 후 실행 -->
+  <!-- (type="text/babel" src="app.jsx" 방식은 서버의 MIME 타입 처리에 따라 Babel이 로드를 못하는 경우가 있어 fetch 방식으로 대체) -->
+  <script>
+    fetch('app.jsx')
+      .then(res => {
+        if (!res.ok) throw new Error('app.jsx 로드 실패: ' + res.status);
+        return res.text();
+      })
+      .then(code => {
+        // 방어적 처리: 혹시 남아있는 import/export 문 제거 (UMD 전역 React 사용 환경이므로 불필요)
+        const cleaned = code
+          .replace(/^\s*import\s+.*?;?\s*$/gm, '')
+          .replace(/^\s*export\s+default\s+/gm, '')
+          .replace(/^\s*export\s+/gm, '');
+        const transpiled = Babel.transform(cleaned, {
+          presets: [['react', { runtime: 'classic' }]],
+          sourceType: 'script'
+        }).code;
+        const script = document.createElement('script');
+        script.text = transpiled;
+        document.body.appendChild(script);
+      })
+      .catch(err => {
+        document.getElementById('root').innerHTML =
+          '<div style="padding:40px;font-family:sans-serif;color:#b91c1c;">' +
+          '<h2>앱 로드 오류</h2><p>' + err.message + '</p></div>';
+        console.error(err);
+      });
+  </script>
 
 </body>
 </html>
