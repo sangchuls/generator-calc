@@ -1221,7 +1221,7 @@ function App(){
     setD(p=>{
       const next={...p,[k]:val};
       // 직접입력 모드가 아닐 때, Q관련 값 변경 시 oa/ea 자동 연동
-      if(next.model!=='custom' && ['qcomb','qcool','vref_i','vref_e'].includes(k)){
+      if(['qcomb','qcool','vref_i','vref_e'].includes(k)){ // 직접입력 포함 모든 모드 연동
         const vi=next.vref_i||7.0;
         const ve=next.vref_e||8.0;
         next.oa=R((next.qcomb+next.qcool)/60/vi);
