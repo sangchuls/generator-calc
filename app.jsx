@@ -1230,6 +1230,34 @@ function App(){
       return next;
     });
   },[]);
+  // URL 쿼리 파라미터로 초기값 주입 (외부 에이전트가 계산 근거를 이 화면으로 보여줄 때 사용)
+  // 예: ?model=cummins&kw=3000&n_i=8&n_e=8&sf=1.2
+  React.useEffect(()=>{
+    const params=new URLSearchParams(window.location.search);
+    if(params.has('model')||params.has('kw')){
+      const mfgId=params.get('model')||d.model;
+      const kwParam=params.has('kw')?parseFloat(params.get('kw')):null;
+      const mfg=findMfg(mfgId);
+      if(mfg){
+        set('model',mfgId);
+        const target=mfg.models.find(x=>x.kw===kwParam)||mfg.models.find(x=>x.isDefault)||mfg.models[0];
+        if(target){
+          set('kw',target.kw);
+          set('qcomb',target.qcomb);
+          set('qcool',target.qcool);
+          set('vref_i',mfg.vref_i);
+          set('vref_e',mfg.vref_e);
+          if(target.cat_oa!=null) set('oa',target.cat_oa);
+          if(target.cat_ea!=null) set('ea',target.cat_ea);
+        }
+      }
+    }
+    if(params.has('n_i')) set('n_i',parseInt(params.get('n_i')));
+    if(params.has('n_e')) set('n_e',parseInt(params.get('n_e')));
+    if(params.has('sf')) set('sf',parseFloat(params.get('sf')));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[]);
+
   const C=useMemo(()=>compute(d),[d]);
   const TABS=[{k:'diagram',l:'다이어그램'},{k:'area',l:'면적 결과'},{k:'velocity',l:'풍속 검토'},{k:'memo',l:'📋 산식 메모'}];
   const fileRef=React.useRef(null);
