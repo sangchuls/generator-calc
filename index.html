@@ -19,6 +19,9 @@
   <div id="print-area"></div>
   <div id="root"></div>
 
+  <!-- 계산 로직/카탈로그(lib/calc.js)를 먼저 로드 — app.jsx와 api/compute.js가 이 파일을 공유한다 -->
+  <script src="lib/calc.js"></script>
+
   <!-- 앱 스크립트: fetch로 JSX를 읽어와 Babel로 직접 트랜스파일 후 실행 -->
   <!-- (type="text/babel" src="app.jsx" 방식은 서버의 MIME 타입 처리에 따라 Babel이 로드를 못하는 경우가 있어 fetch 방식으로 대체) -->
   <script>
